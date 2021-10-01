@@ -39,7 +39,23 @@ HTML;
         return $this->query("DELETE FROM {$this->table} WHERE id_post = ?", [$id_post]);
     }
 
-    public function update(int $id_post, array $post_data) {
+    // public function update(int $id_post, array $post_data) {
+    //     $sqlRequestPart = "";
+    //     $i = 1;
+
+    //     foreach ($post_data as $key => $value) {
+    //         $commat = $i === count($post_data) ? " " : ', ';
+    //         $sqlRequestPart .= "{$key} = :{$key}{$commat}";
+    //         $i++;
+    //     }
+
+    //     $post_data['id_post'] = $id_post;
+
+    //     return $this->query("UPDATE {$this->table} SET {$sqlRequestPart} WHERE id_post = :id_post", $post_data);
+    // }
+
+    public function update(int $id_post, array $post_data, ?array $relations = null) {
+        // Update post
         $sqlRequestPart = "";
         $i = 1;
 
@@ -51,6 +67,26 @@ HTML;
 
         $post_data['id_post'] = $id_post;
 
-        return $this->query("UPDATE {$this->table} SET {$sqlRequestPart} WHERE id_post = :id_post", $post_data);
+        $this->query("UPDATE {$this->table} SET {$sqlRequestPart} WHERE id_post = :id_post", $post_data);
+
+        // Update tags
+
+        // 1) remove existant tag for a post
+        $stmt = $this->db->getPDO()->prepare("DELETE FROM post_tag WHERE id_post = ?");
+        $result = $stmt->execute(array($id_post));
+
+        if(!$result) {
+            return false;
+        }
+
+        // 2) reinsert tags for a post
+        foreach ($relations as $tag_id) {
+            $stmt = $this->db->getPDO()->prepare("INSERT post_tag (id_post, id_tag) VALUES (?,?)");
+            $stmt->execute(array($id_post, $tag_id));
+        }
+        
+        if($result) {
+            return true;
+        }
     }
 }

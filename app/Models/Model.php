@@ -18,7 +18,7 @@ abstract class Model {
 
         if (strpos($sql, "DELETE") === 0
         || strpos($sql, "UPDATE") === 0
-        || strpos($sql, "CREATE") === 0) {
+        || strpos($sql, "INSERT") === 0) {
             $stmt = $this->db->getPDO()->$method($sql);
             $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this), array($this->db));
             return $stmt->execute($param);

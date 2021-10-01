@@ -31,4 +31,5 @@
         <?= $content ?>
     </div>
 </body>
+<script src="<?= SCRIPTS . 'js' . DIRECTORY_SEPARATOR . 'bootstrap.js' ?>"></script>
 </html>
