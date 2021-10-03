@@ -11,6 +11,7 @@ class PostController extends Controller {
     private $table = "posts";
 
     public function index() {
+        $this->isAdmin();
         $post = new Post($this->getDB());
         $posts = $post->getAll();
 
@@ -18,12 +19,14 @@ class PostController extends Controller {
     }
 
     public function create() {
+        $this->isAdmin();
         $tags = new Tag($this->getDB());
         $tags = $tags->getAll();
         return $this->view('admin.post.form', compact('tags'));
     }
 
     public function createPost() {
+        $this->isAdmin();
         $post = new Post($this->getDB());
 
         $tags = array_pop($_POST); //
@@ -36,6 +39,7 @@ class PostController extends Controller {
     }
 
     public function destroy(int $id_post) {
+        $this->isAdmin();
         $post = new Post($this->getDB());
         $result = $post->destroy($id_post);
 
@@ -45,6 +49,7 @@ class PostController extends Controller {
     }
 
     public function edit(int $id_post) {
+        $this->isAdmin();
         $post = new Post($this->getDB());
         $post = $post->getById($id_post);
 
@@ -55,6 +60,7 @@ class PostController extends Controller {
     }
 
     public function update(int $id_post){
+        $this->isAdmin();
         $post = new Post($this->getDB());
 
         $tags = array_pop($_POST);

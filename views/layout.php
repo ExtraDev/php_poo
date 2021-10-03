@@ -24,6 +24,15 @@
                         <a class="nav-link" href="/posts">Les derniers articles</a>
                     </li>
                 </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <?php if(isset($_SESSION['auth'])) : ?>
+                            <a class="nav-link" href="/logout">Se déconnecté</a>
+                        <?php else : ?>
+                            <a class="nav-link" href="/login">Login</a>
+                        <?php endif ?>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>

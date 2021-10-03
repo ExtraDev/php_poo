@@ -35,6 +35,7 @@ HTML;
     }
 
     public function destroy(int $id_post):bool {
+        $this->isAdmin();
         $this->query("DELETE FROM post_tag WHERE id_post = ?", $id_post);
         return $this->query("DELETE FROM {$this->table} WHERE id_post = ?", [$id_post]);
     }
@@ -55,6 +56,7 @@ HTML;
     // }
 
     public function create(array $data, ?array $relations = null) {
+        $this->isAdmin();
         parent::create($data);
 
         $id_post = $this->db->getPDO()->lastInsertId();
@@ -68,6 +70,7 @@ HTML;
     }
 
     public function update(int $id_post, array $post_data, ?array $relations = null) {
+        $this->isAdmin();
         // Update post
         $sqlRequestPart = "";
         $i = 1;
