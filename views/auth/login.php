@@ -1,6 +1,6 @@
 <h1>Se connecter</h1>
 
-<form action="/login" method="POST">
+<form action="/login" method="POST" class="mb-3">
     <div class="form-group mb-3">
         <label for="username">Nom d'utilisateur</label>
         <input type="text" class="form-control" name="username" id="username">
@@ -12,3 +12,18 @@
 
     <button type="submit" class="btn btn-primary">Se connecter</button>
 </form>
+
+<?php if(isset($_SESSION['errors'])): ?>
+
+<?php foreach($_SESSION['errors'] as $errorsArray): ?>
+    <?php foreach($errorsArray as $errors): ?>
+        <div class="alert alert-danger">
+            <?php foreach($errors as $error): ?>
+                <li><?= $error ?></li>
+            <?php endforeach ?>
+        </div>
+    <?php endforeach ?>
+<?php endforeach ?>
+
+<?php endif ?>
+<?php session_destroy(); ?>
