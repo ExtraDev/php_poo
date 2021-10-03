@@ -17,6 +17,24 @@ class PostController extends Controller {
         return $this->view('admin.post.index', compact('posts'));
     }
 
+    public function create() {
+        $tags = new Tag($this->getDB());
+        $tags = $tags->getAll();
+        return $this->view('admin.post.form', compact('tags'));
+    }
+
+    public function createPost() {
+        $post = new Post($this->getDB());
+
+        $tags = array_pop($_POST); //
+
+        $result = $post->create($_POST, $tags);
+        
+        if($result) {
+            header('location: /admin/posts');
+        }
+    }
+
     public function destroy(int $id_post) {
         $post = new Post($this->getDB());
         $result = $post->destroy($id_post);
@@ -33,7 +51,7 @@ class PostController extends Controller {
         $tag = new Tag($this->getDB());
         $tags = $tag->getAll();
 
-        return $this->view('admin.post.edit', compact('post', 'tags'));
+        return $this->view('admin.post.form', compact('post', 'tags'));
     }
 
     public function update(int $id_post){

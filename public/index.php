@@ -24,6 +24,8 @@ $router->get('admin/posts', 'App\Controllers\Admin\PostController@index');
 $router->post('admin/posts/delete/:id', 'App\Controllers\Admin\PostController@destroy');
 $router->get('admin/post/edit/:id', 'App\Controllers\Admin\PostController@edit');
 $router->post('admin/post/edit/:id', 'App\Controllers\Admin\PostController@update');
+$router->get('admin/post/create', 'App\controllers\Admin\PostController@create');
+$router->post('admin/post/create', 'App\controllers\Admin\PostController@createPost');
 
 try {
     $router->run();

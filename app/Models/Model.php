@@ -40,4 +40,22 @@ abstract class Model {
     public function getAll(): array {
         return $this->query("SELECT * FROM {$this->table} ORDER BY created_at DESC");
     }
+
+    public function create(array $data, ?array $relations = null) {
+        $column = "";
+        $values = "";
+        $i = 1;
+
+        // Build request
+        foreach($data as $key => $value) {
+            $comma = $i === count($data) ? "" : ", ";
+            $column .= "{$key}{$comma}";
+            $values .= ":{$key}{$comma}";
+            $i++;
+        }
+
+        $query = "INSERT INTO {$this->table} ({$column}) VALUES {$values}";
+
+        return $this->query("INSERT INTO {$this->table} ({$column}) VALUES ({$values})", $data);
+    }
 }

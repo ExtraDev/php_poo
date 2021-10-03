@@ -54,13 +54,26 @@ HTML;
     //     return $this->query("UPDATE {$this->table} SET {$sqlRequestPart} WHERE id_post = :id_post", $post_data);
     // }
 
+    public function create(array $data, ?array $relations = null) {
+        parent::create($data);
+
+        $id_post = $this->db->getPDO()->lastInsertId();
+
+        foreach ($relations as $tag_id) {
+            $stmt = $this->db->getPDO()->prepare("INSERT post_tag (id_post, id_tag) VALUES (?,?)");
+            $stmt->execute(array($id_post, $tag_id));
+        }
+
+        return true;
+    }
+
     public function update(int $id_post, array $post_data, ?array $relations = null) {
         // Update post
         $sqlRequestPart = "";
         $i = 1;
 
         foreach ($post_data as $key => $value) {
-            $commat = $i === count($post_data) ? " " : ', ';
+            $commat = $i === count($post_data) ? "" : ', ';
             $sqlRequestPart .= "{$key} = :{$key}{$commat}";
             $i++;
         }
